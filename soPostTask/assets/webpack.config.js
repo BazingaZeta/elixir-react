@@ -12,8 +12,11 @@ module.exports = (env, options) => ({
       new OptimizeCSSAssetsPlugin({})
     ]
   },
+  resolve: {
+    extensions: [".js", ".jsx", ".ts", ".tsx"]
+  },
   entry: {
-    './js/app.js': glob.sync('./vendor/**/*.js').concat(['./js/app.js'])
+    'app': "./js/app.tsx"
   },
   output: {
     filename: 'app.js',
@@ -22,15 +25,21 @@ module.exports = (env, options) => ({
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(j|t)sx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader'
         }
       },
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        test: /\.s(c|a)ss$/,
+        use: 
+        [ 
+          "style-loader", 
+          MiniCssExtractPlugin.loader, 
+          'css-loader', 
+          "sass-loader"
+        ]
       }
     ]
   },
